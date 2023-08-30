@@ -28,13 +28,14 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_CAF_SAMPLE_LED_STATE_LOG_LEVEL);
 #define BLINKYTHREAD_PRIORITY 3
 #define STACKSIZE 256
 
-#define BLINKY_SLEEP_DEFAULT 100
-#define BLINKY_SLEEP_DOUBLE 25
-#define BLINKY_SLEEP_LONG 1000
-
-uint32_t BLINKY_SLEEP = BLINKY_SLEEP_DEFAULT;
+#define BLINKY_SLEEP_FAST 100
+#define BLINKY_SLEEP_SLOW 250
 
 volatile bool dir = true; // true = forward, false = reverse
+volatile bool speed = false; //true = fast, false = flow.
+
+uint8_t cnt = 0; // led position
+
 /*
  * The led0 devicetree alias is optional. If present, we'll use it
  * to turn on the LED whenever the button is pressed.
@@ -58,18 +59,21 @@ enum button_id {
 };
 
 static bool handle_click_event(const struct click_event *evt) {
-	if(evt->key_id == 0)
+	LOG_INF("CLICK HANDLER");
+	if(evt->key_id == 0x01)
 	{
 		switch (evt->click)
 		{
 			case CLICK_SHORT:
-				dir ^= dir;
-				break;
-			case CLICK_LONG:
-				BLINKY_SLEEP = BLINKY_SLEEP_LONG;
+				gpio_pin_set_dt(&led0, 0);
+				gpio_pin_set_dt(&led1, 0);
+				gpio_pin_set_dt(&led2, 0);
+				gpio_pin_set_dt(&led3, 0);
+				(dir)? (cnt = 0) : (cnt = 3);
+				dir = !dir;
 				break;
 			case CLICK_DOUBLE:
-				BLINKY_SLEEP = BLINKY_SLEEP_DOUBLE;
+				speed = !speed;
 				break;
 			default:
 				break;
@@ -82,6 +86,7 @@ static bool handle_click_event(const struct click_event *evt) {
 
 static bool app_event_handler(const struct app_event_header *aeh)
 {
+	LOG_INF("EVENT HANDLER");
 	if (is_click_event(aeh)) {
         return handle_click_event(cast_click_event(aeh));
     }
@@ -106,11 +111,9 @@ static bool app_event_handler(const struct app_event_header *aeh)
 
 void blinkythread(void)
 {
-	uint8_t cnt = 0;
     /* If we have an LED, match its state to the button's. */
     while(1)
     {
-		(dir)? cnt++ : cnt--;
         switch(cnt & 0x3)
         {
             case 0:
@@ -126,8 +129,9 @@ void blinkythread(void)
                 gpio_pin_toggle_dt(&led2);
                 break;
         }
-
-        k_msleep(BLINKY_SLEEP);
+		
+		(dir)? cnt++ : cnt--;
+        (speed)? k_msleep(BLINKY_SLEEP_FAST) : k_msleep(BLINKY_SLEEP_SLOW); 
     }
 }
 
