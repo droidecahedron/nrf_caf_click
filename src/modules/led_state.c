@@ -31,7 +31,7 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_CAF_SAMPLE_LED_STATE_LOG_LEVEL);
 #define BLINKY_SLEEP_SLOW 250
 
 volatile bool dir = true;    // true = forward, false = reverse
-volatile bool speed = false; // true = fast, false = flow.
+volatile bool speed = false; // true = fast, false = slow.
 
 uint8_t cnt = 0; // led position
 
