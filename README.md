@@ -9,7 +9,8 @@ Based on this sample: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/2.4.1
 Not completely cleaned up, but gets you close.
 
 # usage
-Press button 1 once to alternate the direction of the led scroll.
-Press button 1 twice to alternate the speed of the led scroll.
+
+- Press button 2 once to alternate the direction of the led scroll.
+- Press button 2 twice to alternate the speed of the led scroll.
 
 
