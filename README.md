@@ -13,4 +13,7 @@ Not completely cleaned up, but gets you close.
 - Press button 2 once to alternate the direction of the led scroll.
 - Press button 2 twice to alternate the speed of the led scroll.
 
+# Video
+https://github.com/droidecahedron/nrf_caf_click/assets/63935881/d66a88fd-9624-4068-be93-851c2d8ae153
+
 
