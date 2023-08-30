@@ -8,7 +8,7 @@ Based on this sample: https://developer.nordicsemi.com/nRF_Connect_SDK/doc/2.4.1
 
 Not completely cleaned up, but gets you close.
 
-I also prefer using timers like I did [**here**](https://github.com/droidecahedron/nrf_io_practice/tree/main) for similar behavior.
+# I also prefer using timers like I did [**here**](https://github.com/droidecahedron/nrf_io_practice/tree/main) for similar behavior. Use this repo at your own discretion.
 
 # usage
 
